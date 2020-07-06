@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Janna Huang</title>
+  <title>常用的 ES6 语法 | Janna Huang</title>
   
   
   
@@ -50,43 +50,14 @@
 
     <div class="container">
         <div data-pager-shell>
-            <ul class="Index">
-  
+            <div>
+  <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>{ JavaScript }</h1>
+        <h1>常用的 ES6 语法</h1>
     </header>
-  
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/07/06/commonly-used-es-6/">常用的 ES6 语法</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-06T06:07:18.000Z" itemprop="datePublished">
-    2020-07-06
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/JavaScript/">JavaScript</a> }
-  </li>
 
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>ECMAScript 6.0（以下简称 ES6）是 JavaScript 语言的下一代标准，已经在 2015 年 6 月正式发布了，其正式名称是 ES2015。它的目标，是使得 JavaScript 语言可以用来编写复杂的大型应用程序，成为企业级开发语言。</p>
+    <section>
+      <p>ECMAScript 6.0（以下简称 ES6）是 JavaScript 语言的下一代标准，已经在 2015 年 6 月正式发布了，其正式名称是 ES2015。它的目标，是使得 JavaScript 语言可以用来编写复杂的大型应用程序，成为企业级开发语言。</p>
 <h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><h2 id="块级作用域"><a href="#块级作用域" class="headerlink" title="块级作用域"></a>块级作用域</h2><p>通过 <strong>var</strong> 声明的变量或者非严格模式下(non-strict mode)创建的函数声明没有块级作用域。<br>如：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(x); <span class="comment">// 输出 2</span></span><br></pre></td></tr></table></figure>
 <p>块中的 var x语句与块前面的var x语句作用域相同，因此输出 2。</p>
@@ -178,137 +149,35 @@
 
 <p><em>以上笔记参考 MDN</em></p>
 
-      
-    </div>
-</article>
 
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
       
-        <h1>
-          <a href="/2020/07/05/what-is-the-prototype-chain/">什么是 JS 原型链？</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-05T13:24:31.000Z" itemprop="datePublished">
-    2020-07-05
-  </time>
-  
-  | 
-  <ul>
+
+    </section>
     
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-06T06:07:18.000Z" itemprop="datePublished">
+              2020-07-06
+            </time>
+          </div>
+          
+            <div>
+              tags: 
   <li class="meta-text">
   { <a href="/tags/JavaScript/">JavaScript</a> }
   </li>
 
 
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>原型链的基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。</p>
-<p>原型链的基本概念是每个实例对象（object）都有一个私有属性（称之为__ proto__，即[[ Prototype]]）指向它的构造函数的原型对象（prototype）。该原型对象也有一个自己的原型对象（__ proto__），层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。如此层层递进，构成了实例与原型的链条。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.property = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.property</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.subproperty = <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType() <span class="comment">// 继承了 SuperType</span></span><br><span class="line">SubType.prototype.getSubValue = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.subproperty</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType()</span><br><span class="line"><span class="built_in">console</span>.log(instance.getSuperValue()) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>以上代码可见，SubType 的原型被替换成 SuperType 的实例，继承了 SuperType 的属性和方法，在此基础上，还可以利用 SubType.prototype 给 SubType 添加属性和方法。</p>
-<p>当以读取模式访问一个实例属性时，首先会在实例中搜索该属性。如果没有找到，则继续搜索实例的原型。在通过原型链实现继承的情况下，搜索过程就得以沿着原型链继续向上。</p>
-<p>比如上例在调用 instance.getSuperValu()时经历 3 个搜索步骤：</p>
-<ol>
-<li>搜索实例 instance，无果，向上搜索</li>
-<li>搜索 SubType.prototype，无果，向上搜索</li>
-<li>搜索 SuperType.prototype，找到了，停止搜索</li>
-</ol>
-<p>所有函数的默认原型都是 Object 的实例，因此默认原型都会包含一个内部指针指向 Object.prototype，因此所有自定义类型都会继承 Object.prototype 的默认方法。</p>
-<h2 id="如何确定原型和实例的关系"><a href="#如何确定原型和实例的关系" class="headerlink" title="如何确定原型和实例的关系"></a>如何确定原型和实例的关系</h2><p>我们可以通过两种方式确定原型和实例之间的关系：</p>
-<ol>
-<li>instanceof 操作符<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(instance <span class="keyword">instanceof</span> <span class="built_in">Object</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(instance <span class="keyword">instanceof</span> SuperType) <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
-<li>isPrototypeOf() 方法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.isPrototypeOf(instance)) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(SuperType.prototype.isPrototypeOf(instance)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="定义方法注意事项"><a href="#定义方法注意事项" class="headerlink" title="定义方法注意事项"></a>定义方法注意事项</h2><ol>
-<li>给原型添加方法的代码一定要放在替换原型的语句之后</li>
-<li>不能使用对象字面量创建原型方法，这样会重写原型链</li>
-</ol>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">this</span>.property = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.property</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">this</span>.subproperty = <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType() <span class="comment">//继承了 SuperType，替换原型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用字面量添加新方法，会导致上一行代码无效 </span></span><br><span class="line">SubType.prototype = &#123;</span><br><span class="line">  getSubValue : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.subproperty</span><br><span class="line">  &#125;,</span><br><span class="line">  someOtherMethod : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType()</span><br><span class="line"><span class="built_in">console</span>.log(instance.getSuperValue()) <span class="comment">//报错：instance.getSuperValue is not a function!</span></span><br><span class="line"><span class="comment">// SubType 和 SuperType 之间已没有关系</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="原型链的问题"><a href="#原型链的问题" class="headerlink" title="原型链的问题"></a>原型链的问题</h2><ol>
-<li>包含引用类型值的原型属性会被所有实例共享</li>
-<li>不能在不影响所有对象实例的情况下，给超类型的构造函数传递参数</li>
-</ol>
-
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/07/04/apply-call-bind/">apply()，call()和 bind()的作用和区别</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-04T04:29:14.000Z" itemprop="datePublished">
-    2020-07-04
-  </time>
-  
-  | 
-  <ul>
+            </div>
+          
+      </section>
     
-  <li class="meta-text">
-  { <a href="/tags/JavaScript/">JavaScript</a> }
-  </li>
-
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>每个函数都有三个方法：apply()，call()和 bind()。用途都是在特定的作用域中调用函数。</p>
-<h1 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h1><p>apply()方法接收两个参数：一个是在其中运行函数的作用域，另一个是参数数组。第二个参数可以是 Array 的实例，或者是 arguments 对象。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum1</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>) <span class="comment">// 传入 arguments 对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum2</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.apply(<span class="keyword">this</span>, [num1, num2]) <span class="comment">// 传入数组</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum1(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br><span class="line"><span class="built_in">console</span>.log(sum2(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="call"><a href="#call" class="headerlink" title="call()"></a>call()</h1><p>call()方法和 apply()方法的作用相同，区别仅在于<strong>接收参数的方式不同</strong>。对于 call()方法而言，第一个参数是 this 值没有变化，变化的是其余参数都直接传递给函数，即传递给函数的参数必须逐个列举出来。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum1</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.call(<span class="keyword">this</span>, num1, num2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum1(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h1><p>bind()方法会创建一个函数的实例，称为绑定函数。当调用这个绑定函数时，绑定函数会以创建它时传入 bind()方法的第一个参数作为 this，传入 bind()方法的第二个以及以后的参数加上绑定函数运行时本身的参数按照顺序作为原函数的参数来调用原函数。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">"red"</span></span><br><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">  color: <span class="string">"blue"</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.color)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor.bind(o)() <span class="comment">// blue</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="三者区别"><a href="#三者区别" class="headerlink" title="三者区别"></a>三者区别</h1><ul>
-<li>三者都能够扩充函数赖以运行的作用域，改变 this 的指向，好处是对象不需要与方法有任何耦合关系。</li>
-<li>三者的第一个参数都是 this 要指向的对象。</li>
-<li>apply() 和 call()都是立即执行，而 bind() 返回的是函数，需要再执行一次。</li>
-</ul>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">"red"</span></span><br><span class="line"><span class="keyword">var</span> o = &#123;</span><br><span class="line">  color: <span class="string">"blue"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.color)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor() <span class="comment">// red</span></span><br><span class="line">sayColor.apply(<span class="keyword">this</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.apply(<span class="built_in">window</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.call() <span class="comment">// red</span></span><br><span class="line">sayColor.call(<span class="built_in">window</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.call(o) <span class="comment">// blue</span></span><br><span class="line">sayColor.bind(o)() <span class="comment">// blue</span></span><br><span class="line">sayColor.bind()() <span class="comment">// red</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
+    
 </article>
 
-    </li>
   
-</ul>
-
-
+</div>
 
             <footer>
     <div>© 2020 - Janna Huang </div>
