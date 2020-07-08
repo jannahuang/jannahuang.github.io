@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>跨域是什么 | Janna Huang</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Janna Huang</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>跨域是什么</h1>
+    </header>
+
+    <section>
+      <h1 id="跨域是什么？"><a href="#跨域是什么？" class="headerlink" title="跨域是什么？"></a>跨域是什么？</h1><p>只要协议、域名、端口有任何一个不同，就是不同的域，它们之间的请求就是跨域请求。而浏览器的同源策略出于安全考虑，只允许同域下的请求。</p>
+<h1 id="跨域解决方案"><a href="#跨域解决方案" class="headerlink" title="跨域解决方案"></a>跨域解决方案</h1><h2 id="1-CORS"><a href="#1-CORS" class="headerlink" title="1. CORS"></a>1. CORS</h2><p>CORS 跨域资源共享（Cross-origin resource sharing）允许浏览器向跨域的服务器发出 XMLHttpRequest 请求。</p>
+<p>CORS 需要浏览器和服务器同时支持，即分别在浏览器请求和服务器中添加相关字段。</p>
+<ol>
+<li>浏览器请求<br>浏览器发现 ajax 请求跨域时，会自动添加一些附加的头信息。<ul>
+<li>需要注意的是，请求中需要设置 withCredentials 为 true，以发送 Cookie.<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.withCredentials = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>服务器<br>在响应头中添加相关字段。</li>
+</ol>
+<ul>
+<li>Access-Control-Allow-Origin，必选，设置为请求时 Origin 字段的值，或者设置为 * 表示接受任意域名的请求。</li>
+<li>Access-Control-Allow-Credentials，可选，设置为 true 表示允许浏览器把 Cookie 包含在请求中一起发给服务器。</li>
+</ul>
+<h2 id="2-JSONP"><a href="#2-JSONP" class="headerlink" title="2. JSONP"></a>2. JSONP</h2><p>JSONP(JSON with Padding) 是 json 的一种”使用模式”，可以跨域读取数据。</p>
+<ol>
+<li>在网页添加一个&lt; script&gt;元素，向服务器请求一个脚本。带上一个 callback 参数，用于告诉服务器浏览器的回调函数是 func。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"http://xxx.com?callback=func"</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>服务器接收到请求后，将回调函数名和 JSON 数据拼接成一个字符串，以字符串形式返回，如 res.send(func+”{console.log(‘Hello’)}”)，即返回 func({console.log(‘Hello’)})。</li>
+<li>浏览器会将服务器返回的字符串当作代码解释，在浏览器中定义的 func()函数执行，可以拿到服务器返回的 JSON 数据。</li>
+</ol>
+<blockquote>
+<p><strong>CORS 与 JSONP 区别：</strong></p>
+<ol>
+<li>CORS 支持所有类型的 HTTP 请求，JSONP 只支持 GET 请求</li>
+<li>JSONP 支持老式浏览器</li>
+</ol>
+</blockquote>
+<h2 id="3-服务器代理跨域"><a href="#3-服务器代理跨域" class="headerlink" title="3. 服务器代理跨域"></a>3. 服务器代理跨域</h2><p>Nginx 和 Node.js 中间件服务器代理跨域，由于服务器不存在跨域问题，可以由服务器请求所要域的资源再返回。由后端处理，就不展开细说。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-08T07:56:40.000Z" itemprop="datePublished">
+              2020-07-08
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Janna Huang </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
