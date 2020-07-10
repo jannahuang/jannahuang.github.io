@@ -62,6 +62,74 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/07/10/what-is-the-this/">this 关键字</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-10T13:09:07.000Z" itemprop="datePublished">
+    2020-07-10
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>this 代表属性或方法当前所在的对象，this 的指向是可变的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> A = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'姓名：'</span>+ <span class="keyword">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> B = &#123;</span><br><span class="line">  name: <span class="string">'李四'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">B.describe = A.describe;</span><br><span class="line">B.describe() <span class="comment">// "姓名：李四"</span></span><br></pre></td></tr></table></figure>
+<p>上例中，A.describe 函数赋值给了 B，这时调用 B.describe()，this 指向方法当前所在的对象 B，所以 this.name 是’李四’。</p>
+<p><strong>当函数被赋值给另一个变量，this 指向改变。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> A = &#123;</span><br><span class="line">  name: <span class="string">'张三'</span>,</span><br><span class="line">  describe: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'姓名：'</span>+ <span class="keyword">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'李四'</span>;</span><br><span class="line"><span class="keyword">var</span> f = A.describe;</span><br><span class="line">f() <span class="comment">// "姓名：李四"</span></span><br></pre></td></tr></table></figure>
+<p>上例中将 A.describe 赋值给外部变量 f，this 指向外部，即 f 运行时所在的对象。</p>
+<h1 id="this-存在的原因"><a href="#this-存在的原因" class="headerlink" title="this 存在的原因"></a>this 存在的原因</h1><p>当把一个对象赋值给变量时，JavaScript 引擎会先在内存中生成一个对象，然后把该对象当内存地址赋值给变量。当读取该变量时，JavaScript 引擎先从变量拿到内存地址，再从内存地址中读取原始当对象返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>:  <span class="number">5</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其实是用以下 属性描述对象 形式保存：</span></span><br><span class="line">&#123;</span><br><span class="line">  foo: &#123;</span><br><span class="line">    [[value]]: <span class="number">5</span>  <span class="comment">// 值存在属性描述对象当 value 属性</span></span><br><span class="line">    [[writable]]: <span class="literal">true</span></span><br><span class="line">    [[enumerable]]: <span class="literal">true</span></span><br><span class="line">    [[configurable]]: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而当属性的值是函数时，JavaScript 会将函数单独保存在内存中，再将函数的地址赋值给属性的 value 属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  foo: &#123;</span><br><span class="line">    [[value]]: 函数的地址</span><br><span class="line">    [[writable]]: <span class="literal">true</span></span><br><span class="line">    [[enumerable]]: <span class="literal">true</span></span><br><span class="line">    [[configurable]]: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于函数是一个单独的值，所以它可以在不同的环境（上下文）执行，也因此所以需要有一种机制，能够在函数体内部获得当前的运行环境（context）。而设计 this 的目的就是在函数体内部，指代函数当前的运行环境。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  f: f,</span><br><span class="line">  x: <span class="number">2</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 单独执行，this 指向全局环境</span></span><br><span class="line">f() <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// obj 环境执行，this 指向 obj</span></span><br><span class="line">obj.f() <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="this-使用场合"><a href="#this-使用场合" class="headerlink" title="this 使用场合"></a>this 使用场合</h1><ol>
+<li>全局环境下运行，this 指向的就是顶层 window</li>
+<li>构造函数中的 this 指向的是实例对象</li>
+<li>对象的方法</li>
+</ol>
+<ul>
+<li>如果对象的方法里面包含 this，this 的指向就是方法运行时所在的对象。当该方法赋值给另一个对象，就会改变 this 的指向。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj =&#123;</span><br><span class="line">  foo: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj.foo() <span class="comment">// obj</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 而以下这几种用法，都会改变this的指向</span></span><br><span class="line"><span class="comment">// 情况一</span></span><br><span class="line">(obj.foo = obj.foo)() <span class="comment">// window</span></span><br><span class="line"><span class="comment">// 情况二</span></span><br><span class="line">(<span class="literal">false</span> || obj.foo)() <span class="comment">// window</span></span><br><span class="line"><span class="comment">// 情况三</span></span><br><span class="line">(<span class="number">1</span>, obj.foo)() <span class="comment">// window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 三种情况等同于：</span></span><br><span class="line"><span class="comment">// 情况一</span></span><br><span class="line">(obj.foo = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;)()</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 情况二</span></span><br><span class="line">(<span class="literal">false</span> || <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 情况三</span></span><br><span class="line">(<span class="number">1</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+上例中 obj.foo 相当于一个值，在调用时运行环境是全局环境。</li>
+</ul>
+<p>如果this所在的方法不在对象的第一层，这时this只是指向当前一层的对象，而不会继承更上面的层。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">  p: <span class="string">'Hello'</span>,</span><br><span class="line">  b: &#123;</span><br><span class="line">    m: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.p);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.b.m() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<p>要输出预期值则改写成如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">  b: &#123;</span><br><span class="line">    m: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.p);</span><br><span class="line">    &#125;,</span><br><span class="line">    p: <span class="string">'Hello'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/07/09/clone-and-clone-deep/">如何实现浅拷贝和深拷贝</a>
         </h1>
       
