@@ -58,6 +58,112 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/07/15/what-is-the-cookie/">Cookie 是什么</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-15T03:18:23.000Z" itemprop="datePublished">
+    2020-07-15
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>这个 Cookie 不是曲奇，而是<strong>服务器保存在浏览器的一小段文本信息，用于存储用户信息</strong>，一般大小不超过 4KB。当浏览器向服务器发送请求时，会附上 Cookie 信息，服务器可通过 Cookie 获取用户信息。</p>
+<p>由于 Cookie 容量很小，不宜存放过多信息，应该只存放每次请求都需要让服务器知道的信息。</p>
+<p>Cookie 以名/值对形式存储，有以下几种元数据：</p>
+<ol>
+<li>Cookie 的名称 cookie-name</li>
+<li>Cookie 的值 cookie-value</li>
+<li>过期时间 expires</li>
+<li>所属域名（默认为当前域名） domain</li>
+<li>生效的路径（默认为当前网址） path<ul>
+<li>如果 Cookie 生效路径不是跟路径/，而假设为/xxx，那这个 Cookie 在/xxx 及其子路径访问时才有效。</li>
+</ul>
+</li>
+</ol>
+<p>浏览器访问某个路径前，会先找出对该域名和路径都有效，而且未过期的 Cookie，再发送给服务器。</p>
+<blockquote>
+<p>不同浏览器对 Cookie 数量和大小的限制不同。一般来说，单个域名设置的 Cookie 不应超过30个，每个 Cookie 的大小不能超过 4KB。超过限制以后，Cookie 将被忽略，不会被设置。</p>
+</blockquote>
+<h1 id="Cookie-与-HTTP-协议"><a href="#Cookie-与-HTTP-协议" class="headerlink" title="Cookie 与 HTTP 协议"></a>Cookie 与 HTTP 协议</h1><p>Cookie 由 HTTP 协议生成，也主要供 HTTP 协议使用。</p>
+<h2 id="HTTP-响应：生成-Cookie"><a href="#HTTP-响应：生成-Cookie" class="headerlink" title="HTTP 响应：生成 Cookie"></a>HTTP 响应：生成 Cookie</h2><p>如果服务器希望在浏览器保存 Cookie，可以在 HTTP 响应头里放置一个 Set-Cookie 字段。可以放置多个 Set-Cookie 字段，在浏览器生成多个 Cookie。除了 Cookie 名/值，Set-Cookie 还可以附加 Cookie 的属性，可以包含多个属性，没有次序要求。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.0</span> <span class="number">200</span> OK</span><br><span class="line">Content-type: text/html</span><br><span class="line"><span class="built_in">Set</span>-Cookie: yummy_cookie=choco</span><br><span class="line"><span class="built_in">Set</span>-Cookie: &lt;cookie-name&gt;=&lt;cookie-value&gt;; Domain=&lt;domain-value&gt;; Max-Age=&lt;non-zero-digit&gt;; Expires=&lt;date&gt;; Path=&lt;path-value&gt;; Secure; HttpOnly</span><br></pre></td></tr></table></figure>
+
+<h2 id="HTTP-请求：发送-Cookie"><a href="#HTTP-请求：发送-Cookie" class="headerlink" title="HTTP 请求：发送 Cookie"></a>HTTP 请求：发送 Cookie</h2><p>当浏览器向服务器发送 HTTP 请求时，每个请求都会带上相应的 Cookie。使用 HTTP 头信息的 Cookie 字段，可以包含多个 Cookie，使用分号;分隔。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /sample_page.html HTTP/<span class="number">1.1</span></span><br><span class="line">Host: www.example.org</span><br><span class="line">Cookie: yummy_cookie=choco; tasty_cookie=strawberry</span><br></pre></td></tr></table></figure>
+<p>服务器收到浏览器发送的 Cookie，无法知道：</p>
+<ol>
+<li>Cookie 的各种属性</li>
+<li>是哪个域名设置的 Cookie</li>
+</ol>
+<h1 id="Cookie-的属性"><a href="#Cookie-的属性" class="headerlink" title="Cookie 的属性"></a>Cookie 的属性</h1><h2 id="1-Expires，Max-Age"><a href="#1-Expires，Max-Age" class="headerlink" title="1. Expires，Max-Age"></a>1. Expires，Max-Age</h2><p><strong>Expires 属性指定一个具体的到期时间</strong>，时间到了浏览器就不保留这个 Cookie。属性值是 UTC 格式，可以使用 Date.prototype.toUTCString()进行格式转换。浏览器根据本地时间决定是否过期，所以不能保证 Cookie 会在服务器指定时间过期。</p>
+<p><strong>Max-Age 属性指定从现在开始 Cookie 存在的秒数</strong>，比如 60 * 60 * 24 是一天后过期。</p>
+<p>如果同时设置 Expires 或 Max-Age 属性，<strong>Max-Age 优先生效</strong>。如果不设置 Expires 或 Max-Age 属性，或者设为 null，表示 Cookie 只在当前会话有效，关闭浏览器该 Cookie 即被删除。</p>
+<h2 id="2-Domain，Path"><a href="#2-Domain，Path" class="headerlink" title="2. Domain，Path"></a>2. Domain，Path</h2><p>Domain 属性指定浏览器发出 HTTP 请求时，哪些域名要附带这个 Cookie。如果没有指定该属性，浏览器会默认将其设为当前域名，这时子域名将不会附带这个 Cookie。如果指定了domain属性，那么子域名也会附带这个 Cookie。</p>
+<p>如果服务器指定的域名不属于当前域名，浏览器会拒绝这个 Cookie。</p>
+<p>Path 属性指定浏览器发出 HTTP 请求时，哪些路径要附带这个 Cookie。在域名一致的前提下，浏览器发现 Path 子路径，就会在头信息里带上 Cookie。</p>
+<h2 id="3-Secure，HttpOnly"><a href="#3-Secure，HttpOnly" class="headerlink" title="3. Secure，HttpOnly"></a>3. Secure，HttpOnly</h2><p>Secure 属性指定浏览器只有在加密协议 HTTPS 下，才能将这个 Cookie 发送到服务器。</p>
+<p>HttpOnly属性指定该 Cookie 无法通过 JavaScript 脚本拿到，只有浏览器发出 HTTP 请求时，才会带上该 Cookie。</p>
+<h2 id="4-SameSite"><a href="#4-SameSite" class="headerlink" title="4. SameSite"></a>4. SameSite</h2><p>SameSite 属性用来限制第三方 Cookie，从而减少安全风险。它可以设置三个值：</p>
+<ol>
+<li>Strict<ul>
+<li>最为严格，完全禁止第三方 Cookie，跨站点时任何情况下都不会发送 Cookie。</li>
+</ul>
+</li>
+<li>Lax<ul>
+<li>大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外。</li>
+</ul>
+</li>
+<li>None<ul>
+<li>Chrome 计划将 Lax 变为默认设置。这时，网站可以选择显式关闭 SameSite 属性，将其设为 None。不过，前提是必须同时设置 Secure 属性（Cookie 只能通过 HTTPS 协议发送），否则无效。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Set</span>-Cookie: widget_session=abc123; SameSite=None; Secure</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<p>用户浏览器支持 SameSite 属性的情况下，设置 Strict 或 Lax 以后，基本就杜绝了 CSRF 攻击。</p>
+<h1 id="document-cookie"><a href="#document-cookie" class="headerlink" title="document.cookie"></a>document.cookie</h1><p>可以使用 document.cookie 属性来增删改查 Cookie。在 Cookie 没有 HTTPOnly 属性时，读取会返回当前网页的所有 Cookie，用分号隔开。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"username=Jack; expires=Tue, 18 Aug 2020 12:00:00 GMT; path=/"</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">'fontSize=14; '</span></span><br><span class="line">  + <span class="string">'expires='</span> + someDate.toGMTString() + <span class="string">'; '</span></span><br><span class="line">  + <span class="string">'path=/subdirectory; '</span></span><br><span class="line">  + <span class="string">'domain=*.example.com'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>写入 Cookie 注意点：</p>
+<ol>
+<li>Cookie 的值必须写成 key=value 的形式，<strong>等号两边不能有空格</strong>。</li>
+<li>必须对分号、逗号和空格进行转义，可以用encodeURIComponent。</li>
+<li>一次只能写入一个 Cookie，而且<strong>不是覆盖</strong>，是添加。</li>
+<li>可以同时写入 Cookie 的属性。</li>
+<li>path 属性必须为绝对路径，默认为当前路径。</li>
+<li>domain 属性值必须是当前发送 Cookie 的域名的一部分。</li>
+<li>max-age属性的值为秒数。</li>
+<li>expires属性的值为 UTC 格式，可以使用 Date.prototype.toUTCString()进行日期格式转换。</li>
+<li>Cookie 的属性一旦设置完成，就<strong>不能读取这些属性的值</strong>。</li>
+<li>删除一个现存 Cookie 的<strong>唯一方法</strong>，是将 expires 属性设为一个过去的日期。</li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/07/10/what-is-the-this/">this 关键字</a>
         </h1>
       
@@ -811,61 +917,6 @@ p 的状态由 p1、p2、p3 决定，分成两种情况：</li>
 <li>不能在不影响所有对象实例的情况下，给超类型的构造函数传递参数</li>
 </ol>
 
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/07/04/apply-call-bind/">apply()，call()和 bind()的作用和区别</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-04T04:29:14.000Z" itemprop="datePublished">
-    2020-07-04
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/JavaScript/">JavaScript</a> }
-  </li>
-
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>每个函数都有三个方法：apply()，call()和 bind()。用途都是在特定的作用域中调用函数。</p>
-<h1 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h1><p>apply()方法接收两个参数：一个是在其中运行函数的作用域，另一个是参数数组。第二个参数可以是 Array 的实例，或者是 arguments 对象。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum1</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>) <span class="comment">// 传入 arguments 对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum2</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.apply(<span class="keyword">this</span>, [num1, num2]) <span class="comment">// 传入数组</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum1(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br><span class="line"><span class="built_in">console</span>.log(sum2(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="call"><a href="#call" class="headerlink" title="call()"></a>call()</h1><p>call()方法和 apply()方法的作用相同，区别仅在于<strong>接收参数的方式不同</strong>。对于 call()方法而言，第一个参数是 this 值没有变化，变化的是其余参数都直接传递给函数，即传递给函数的参数必须逐个列举出来。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum1</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> sum.call(<span class="keyword">this</span>, num1, num2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum1(<span class="number">10</span>, <span class="number">10</span>)) <span class="comment">// 20</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h1><p>bind()方法会创建一个函数的实例，称为绑定函数。当调用这个绑定函数时，绑定函数会以创建它时传入 bind()方法的第一个参数作为 this，传入 bind()方法的第二个以及以后的参数加上绑定函数运行时本身的参数按照顺序作为原函数的参数来调用原函数。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">"red"</span></span><br><span class="line"><span class="keyword">var</span> o = &#123; </span><br><span class="line">  color: <span class="string">"blue"</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.color)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor.bind(o)() <span class="comment">// blue</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="三者区别"><a href="#三者区别" class="headerlink" title="三者区别"></a>三者区别</h1><ul>
-<li>三者都能够扩充函数赖以运行的作用域，改变 this 的指向，好处是对象不需要与方法有任何耦合关系。</li>
-<li>三者的第一个参数都是 this 要指向的对象。</li>
-<li>apply() 和 call()都是立即执行，而 bind() 返回的是函数，需要再执行一次。</li>
-</ul>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.color = <span class="string">"red"</span></span><br><span class="line"><span class="keyword">var</span> o = &#123;</span><br><span class="line">  color: <span class="string">"blue"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.color)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayColor() <span class="comment">// red</span></span><br><span class="line">sayColor.apply(<span class="keyword">this</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.apply(<span class="built_in">window</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.call() <span class="comment">// red</span></span><br><span class="line">sayColor.call(<span class="built_in">window</span>) <span class="comment">// red</span></span><br><span class="line">sayColor.call(o) <span class="comment">// blue</span></span><br><span class="line">sayColor.bind(o)() <span class="comment">// blue</span></span><br><span class="line">sayColor.bind()() <span class="comment">// red</span></span><br></pre></td></tr></table></figure>
       
     </div>
 </article>
