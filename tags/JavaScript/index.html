@@ -62,6 +62,86 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/07/16/what-is-the-storage/">Storage 接口是什么</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-16T09:37:22.000Z" itemprop="datePublished">
+    2020-07-16
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>脚本用 Storage 接口在浏览器保存数据。window.sessionStorage 和 window.localStorage 部署了该接口。</p>
+<p>两者的区别是保存时间不同：</p>
+<ol>
+<li>sessionStorage 保存的数据用于浏览器的一次会话（session），通常在关闭窗口即会话结束时，清空数据。</li>
+<li>localStorage 保存的数据长期存在，下次访问时还可以读取之前保存的数据，除非手动清除数据。</li>
+</ol>
+<p><strong>数据以文本格式保存，以键值对形式保存。</strong></p>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>Storage.length：返回保存的数据项个数。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><ol>
+<li><p>Storage.setItem() ：用于存入数据。</p>
+<ul>
+<li>接受两个参数，第一个是键名，第二个是键值。如果键名存在，则更新键值。</li>
+<li>如果参数不是字符串，则自动转换为字符串，再存入浏览器。</li>
+<li>如果储存空间满了，用此方法会报错。</li>
+<li>可以直接赋值。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面三种写法等价</span></span><br><span class="line"><span class="built_in">window</span>.localStorage.foo = <span class="string">'123'</span>;</span><br><span class="line"><span class="built_in">window</span>.localStorage[<span class="string">'foo'</span>] = <span class="string">'123'</span>;</span><br><span class="line"><span class="built_in">window</span>.localStorage.setItem(<span class="string">'foo'</span>, <span class="string">'123'</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Storage.getItem()：用于读取数据。</p>
+<ul>
+<li>接受一个参数，键名。</li>
+<li>如果键名不存在，返回 null。</li>
+<li>参数不是字符串，则自动转为字符串。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.sessionStorage.getItem(<span class="string">'key'</span>)</span><br><span class="line"><span class="built_in">window</span>.localStorage.getItem(<span class="string">'key'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Storage.removeItem()：用于清除某个键名对应的键值。</p>
+<ul>
+<li>接受一个参数，键名。</li>
+<li>如果键名不存在，则不进行任何操作。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.sessionStorage.removeItem(<span class="string">'key'</span>)</span><br><span class="line"><span class="built_in">window</span>.localStorage.removeItem(<span class="string">'key'</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Storage.clear()：用于清除所有保存的数据。</p>
+<ul>
+<li>该方法的返回值是 undefined。</li>
+</ul>
+</li>
+<li><p>Storage.key()接受一个整数（从 0 开始）作为参数，返回该位置对应的键值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.sessionStorage.setItem(<span class="string">'key'</span>, <span class="string">'value'</span>);</span><br><span class="line"><span class="built_in">window</span>.sessionStorage.key(<span class="number">0</span>) <span class="comment">// "key"</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/07/15/what-is-the-cookie/">Cookie 是什么</a>
         </h1>
       
@@ -853,73 +933,6 @@ p 的状态由 p1、p2、p3 决定，分成两种情况：</li>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">userId</span>(<span class="params">&#123;id&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">whois</span>(<span class="params">&#123;displayName: displayName, fullName: &#123;firstName: name&#125;&#125;</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(displayName + <span class="string">" is "</span> + name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> user = &#123; </span><br><span class="line">  id: <span class="number">42</span>, </span><br><span class="line">  displayName: <span class="string">"jdoe"</span>,</span><br><span class="line">  fullName: &#123; </span><br><span class="line">      firstName: <span class="string">"John"</span>,</span><br><span class="line">      lastName: <span class="string">"Doe"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"userId: "</span> + userId(user)); <span class="comment">// "userId: 42"</span></span><br><span class="line">whois(user); <span class="comment">// "jdoe is John"</span></span><br></pre></td></tr></table></figure>
 
 <p><em>以上笔记参考 MDN</em></p>
-
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/07/05/what-is-the-prototype-chain/">什么是 JS 原型链？</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-05T13:24:31.000Z" itemprop="datePublished">
-    2020-07-05
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/JavaScript/">JavaScript</a> }
-  </li>
-
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>原型链的基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。</p>
-<p>原型链的基本概念是每个实例对象（object）都有一个私有属性（称之为__ proto__，即[[ Prototype]]）指向它的构造函数的原型对象（prototype）。该原型对象也有一个自己的原型对象（__ proto__），层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。如此层层递进，构成了实例与原型的链条。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.property = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.property</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.subproperty = <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType() <span class="comment">// 继承了 SuperType</span></span><br><span class="line">SubType.prototype.getSubValue = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.subproperty</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType()</span><br><span class="line"><span class="built_in">console</span>.log(instance.getSuperValue()) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>以上代码可见，SubType 的原型被替换成 SuperType 的实例，继承了 SuperType 的属性和方法，在此基础上，还可以利用 SubType.prototype 给 SubType 添加属性和方法。</p>
-<p>当以读取模式访问一个实例属性时，首先会在实例中搜索该属性。如果没有找到，则继续搜索实例的原型。在通过原型链实现继承的情况下，搜索过程就得以沿着原型链继续向上。</p>
-<p>比如上例在调用 instance.getSuperValu()时经历 3 个搜索步骤：</p>
-<ol>
-<li>搜索实例 instance，无果，向上搜索</li>
-<li>搜索 SubType.prototype，无果，向上搜索</li>
-<li>搜索 SuperType.prototype，找到了，停止搜索</li>
-</ol>
-<p>所有函数的默认原型都是 Object 的实例，因此默认原型都会包含一个内部指针指向 Object.prototype，因此所有自定义类型都会继承 Object.prototype 的默认方法。</p>
-<h2 id="如何确定原型和实例的关系"><a href="#如何确定原型和实例的关系" class="headerlink" title="如何确定原型和实例的关系"></a>如何确定原型和实例的关系</h2><p>我们可以通过两种方式确定原型和实例之间的关系：</p>
-<ol>
-<li>instanceof 操作符<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(instance <span class="keyword">instanceof</span> <span class="built_in">Object</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(instance <span class="keyword">instanceof</span> SuperType) <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
-<li>isPrototypeOf() 方法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.isPrototypeOf(instance)) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(SuperType.prototype.isPrototypeOf(instance)) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="定义方法注意事项"><a href="#定义方法注意事项" class="headerlink" title="定义方法注意事项"></a>定义方法注意事项</h2><ol>
-<li>给原型添加方法的代码一定要放在替换原型的语句之后</li>
-<li>不能使用对象字面量创建原型方法，这样会重写原型链</li>
-</ol>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">this</span>.property = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line">SuperType.prototype.getSuperValue = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.property</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SubType</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">  <span class="keyword">this</span>.subproperty = <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">SubType.prototype = <span class="keyword">new</span> SuperType() <span class="comment">//继承了 SuperType，替换原型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用字面量添加新方法，会导致上一行代码无效 </span></span><br><span class="line">SubType.prototype = &#123;</span><br><span class="line">  getSubValue : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.subproperty</span><br><span class="line">  &#125;,</span><br><span class="line">  someOtherMethod : <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> instance = <span class="keyword">new</span> SubType()</span><br><span class="line"><span class="built_in">console</span>.log(instance.getSuperValue()) <span class="comment">//报错：instance.getSuperValue is not a function!</span></span><br><span class="line"><span class="comment">// SubType 和 SuperType 之间已没有关系</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="原型链的问题"><a href="#原型链的问题" class="headerlink" title="原型链的问题"></a>原型链的问题</h2><ol>
-<li>包含引用类型值的原型属性会被所有实例共享</li>
-<li>不能在不影响所有对象实例的情况下，给超类型的构造函数传递参数</li>
-</ol>
 
       
     </div>
