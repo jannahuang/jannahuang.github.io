@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>节流 throttle 和防抖 debounce 是什么 | Janna Huang</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Janna Huang</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>节流 throttle 和防抖 debounce 是什么</h1>
+    </header>
+
+    <section>
+      <p>节流和防抖是控制事件触发频率的方法，可以节约性能，防止事件频繁触发造成页面卡顿，影响用户体验。</p>
+<h1 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h1><p>多次触发情况下，让函数在一段时间内只执行一次。<br>可以理解为车站按时间表发车，比如 10 分钟发一趟车。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">func, delay</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> canUse = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (canUse) &#123;</span><br><span class="line">      func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">      canUse = <span class="literal">false</span></span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        canUse = <span class="literal">true</span></span><br><span class="line">      &#125;, delay)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>func 是要执行的函数，delay 是延迟的时间。throttle 内部设置一个变量 canUse 以控制函数是否可以执行。当 canUse 为 true，函数执行，并且将 canUse 置为 false，再用定时器控制 delay 时间后将 canUse 置为 true。这样就算多次触发事件，函数 func 只会在指定时间内执行一次。</p>
+<h1 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h1><p>多次触发情况下，让函数在最后一次触发后间隔一段时间再执行。<br>可以理解为汽车到站后，乘客陆续上车，当最后一名乘客上车坐好后，再开车。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func, delay</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timeoutId = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (timeoutId) &#123;</span><br><span class="line">      <span class="built_in">window</span>.clearTimeout(timeoutId)</span><br><span class="line">    &#125;</span><br><span class="line">    timeoutId = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">      timeoutId = <span class="literal">null</span></span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>func 是要执行的函数，delay 是延迟的时间。debounce 内部设置一个变量 timeoutId，用于存放每次新的定时器。当连续触发事件时，如果 timeoutId 不为空，即已有定时器，就清除该定时器，重新设置定时器。这样即便多次触发事件，函数 func 只会在最后一次触发后的 delay 时间后执行。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-20T13:58:16.000Z" itemprop="datePublished">
+              2020-07-20
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Janna Huang </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
