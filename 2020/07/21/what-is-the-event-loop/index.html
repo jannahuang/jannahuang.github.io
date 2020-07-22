@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>事件循环 Event Loop 是什么 | Janna Huang</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Janna Huang</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>事件循环 Event Loop 是什么</h1>
+    </header>
+
+    <section>
+      <p>JavaScript 是一门单线程的非阻塞的脚本语言。<br>单线程意思是 JavaScript 在执行的时候只有一个主线程处理所有任务。<br>非阻塞意思是当需要执行一项异步任务，其结果无法立刻返回的时候，主线程会挂起该任务，等异步任务返回结果时再执行相应的回调。</p>
+<h1 id="浏览器环境下-JS-引擎"><a href="#浏览器环境下-JS-引擎" class="headerlink" title="浏览器环境下 JS 引擎"></a>浏览器环境下 JS 引擎</h1><p>由于 JavaScript 是单线程，同时只能执行一个方法，当多个方法被依次调用时，这些方法会按照执行顺序排队放入执行栈。<br>同步代码执行时，当执行一个方法，JavaScript 会在执行栈中添加该方法的执行环境以执行代码。当执行完毕并返回结果后，JavaScript 会退出当前环境并把该执行环境销毁。直至执行栈中的代码全部执行完毕。<br>而遇到异步事件后，会将该事件挂起，继续执行执行栈中的任务。当异步事件返回结果后，JavaScript 会将该事件加入到事件队列。等执行栈中的任务执行完毕，主线程会查找事件队列中是否还有任务，再将对应事件的回调放入执行栈中执行。<br>这个过程会一直循环，所以称之为事件循环。</p>
+<hr>
+<p>而任务之间执行顺序也有优先级之分，分为微任务 Microtask 和宏任务 MacroTask。<br>当执行栈任务执行完，会优先处理微任务队列中当事件，再处理宏任务事件。</p>
+<h2 id="微任务-MicroTask"><a href="#微任务-MicroTask" class="headerlink" title="微任务 MicroTask"></a>微任务 MicroTask</h2><ol>
+<li>Process.nextTick（Node 独有）</li>
+<li>Promise</li>
+<li>MutationObserver</li>
+</ol>
+<h2 id="宏任务-MacroTask"><a href="#宏任务-MacroTask" class="headerlink" title="宏任务 MacroTask"></a>宏任务 MacroTask</h2><ol>
+<li>script 的全部代码</li>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>setImmediate（浏览器暂时不支持）</li>
+<li>I/O</li>
+<li>UI Rendering</li>
+</ol>
+<h1 id="Node-的事件循环"><a href="#Node-的事件循环" class="headerlink" title="Node 的事件循环"></a>Node 的事件循环</h1><p>Node 的事件循环存在于 libuv 引擎中，表现的状态跟浏览器中的大致相同。</p>
+<p>共有以下 6 个阶段：</p>
+<ol>
+<li>timers: <ul>
+<li>执行 setTimeout 和 setInterval 中到期的 callback。</li>
+</ul>
+</li>
+<li>I/O callbacks: <ul>
+<li>上一轮循环中少数的 callback 会放在这一阶段执行。</li>
+<li>此阶段执行某些系统操作（例如TCP错误类型）的回调。 </li>
+</ul>
+</li>
+<li>idle, prepare: 仅在内部使用。</li>
+<li>poll: <ul>
+<li>最重要的阶段，执行pending callback，在适当的情况下阻塞在这里。</li>
+<li>两个主要功能：<ul>
+<li>执行 I/O 回调。</li>
+<li>处理轮询队列中的事件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>check: <ul>
+<li>执行 setImmediate 的 callback。</li>
+</ul>
+</li>
+<li>close callbacks: <ul>
+<li>执行 close 事件的 callback。</li>
+</ul>
+</li>
+</ol>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-21T13:36:53.000Z" itemprop="datePublished">
+              2020-07-21
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Janna Huang </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
