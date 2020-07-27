@@ -58,6 +58,58 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/07/08/what-is-the-IIFE/">立即执行函数（IIFE）是什么</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-08T06:22:04.000Z" itemprop="datePublished">
+    2020-07-08
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>我们定义函数的方法是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们需要在定义函数之后立即调用，并不能直接在函数的定义后面加上()，这会产生错误。因为 function 关键字可以当作语句，也可以当作表达式。JavaScript 引擎规定如果 function 关键字出现在行首，则一律解释为语句。</p>
+<p>所以当 JavaScript 引擎识别到 function 关键字在行首时，会认为这一段是函数的定义，不能在后面直接加圆括号调用，产生报错。</p>
+<p>因此可以在 function 关键字前面添加符号，让引擎将其理解成一个表达式。而常用的做法是将其放在一个圆括号里面。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;()); <span class="comment">// 调用函数的圆括号在里面</span></span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;)(); <span class="comment">// 调用函数的圆括号在外面</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 同理前面可加其他符号</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;(); </span><br><span class="line">~<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;(); </span><br><span class="line">+<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;(); </span><br><span class="line">-<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;(); </span><br><span class="line">!<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;();</span><br></pre></td></tr></table></figure>
+
+<p>这就是<strong>立即调用的函数表达式，即立即执行函数（Immediately-Invoked Function Expression）</strong>，简称 IIFE。</p>
+<p>这种写法<strong>最后的分号都是必须的</strong>。如果省略分号，遇到连着两个 IIFE，JavaScript 会将它们连在一起解释，将第二行解释为第一行的参数，可能就会报错。</p>
+<p>一般来说，只对匿名函数使用 IIFE，好处是：</p>
+<ol>
+<li>不用为函数命名，避免污染全局变量</li>
+<li>IIFE 内部形成一个单独作用域，可以封装一些外部无法读取的私有变量</li>
+</ol>
+<p><em>笔记参考 JavaScript 教程</em></p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/07/07/what-is-the-closure/">闭包（closure）是什么</a>
         </h1>
       

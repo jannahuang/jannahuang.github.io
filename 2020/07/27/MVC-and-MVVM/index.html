@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MVC 和 MVVM 模式 | Janna Huang</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Janna Huang</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>MVC 和 MVVM 模式</h1>
+    </header>
+
+    <section>
+      <h1 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h1><p>软件可分为三个部分：</p>
+<ol>
+<li>视图 View：用户界面</li>
+<li>控制器 Controller：业务逻辑</li>
+<li>模型 Model：数据保存</li>
+</ol>
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020105.png" alt="MVC"></p>
+<p>各部分之间的通信是单向的：</p>
+<ol>
+<li>View 传送指令到 Controller</li>
+<li>Controller 完成业务逻辑后，要求 Model 改变状态</li>
+<li>Model 将新数据发送给 View，反馈给用户</li>
+</ol>
+<h1 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h1><p>将 Controller 改为 ViewModel。</p>
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020110.png" alt="MVVM"></p>
+<p>各部分之间的通信是双向的，View 与 Model 不发生联系，通过 ViewModel 传递。逻辑部署在 ViewModel。</p>
+<p>采用双向绑定，View 的变动自动反映在 ViewModel，ViewModel 的变动也反映在 View。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-27T13:19:19.000Z" itemprop="datePublished">
+              2020-07-27
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Janna Huang </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
