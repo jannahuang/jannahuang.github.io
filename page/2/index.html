@@ -58,6 +58,88 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/07/09/clone-and-clone-deep/">如何实现浅拷贝和深拷贝</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-09T04:26:25.000Z" itemprop="datePublished">
+    2020-07-09
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/JavaScript/">JavaScript</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h1 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h1><p>JavaScript 基本的数据类型有 7 种：</p>
+<ol>
+<li>undefined：表示未定义或不存在，此处没有任何值。</li>
+<li>null：表示空值，此处的值为空。</li>
+<li>boolean 布尔值：表示真伪，true 和 false。</li>
+<li>number 数值：整数和小数。</li>
+<li>string 字符串：文本。</li>
+<li>object 对象：各种值组成的集合。可以分成三个子类型：狭义的对象 object、数组 array、函数 function。</li>
+<li>symbol：ES6 新增的一种基本数据类型。一个 symbol 值能作为对象属性的标识符，每个从 Symbol()返回的 symbol 值都是唯一的。</li>
+</ol>
+<p>确定一个值的类型有 3 种方法：</p>
+<ol>
+<li>typeof 运算符</li>
+<li>instanceof 运算符</li>
+<li>Object.prototype.toString 方法</li>
+</ol>
+<p>数值、字符串、布尔值分别返回number、string、boolean，属于基本类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">123</span> <span class="comment">// "number"</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">'123'</span> <span class="comment">// "string"</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">false</span> <span class="comment">// "boolean"</span></span><br></pre></td></tr></table></figure>
+<p>对象返回 object，属于引用类型，即指向某一个地址。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">// "object"</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">// "object"</span></span><br></pre></td></tr></table></figure>
+
+<p>当引用一个值的时候，如果是基本类型：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">11</span></span><br><span class="line"><span class="keyword">var</span> b = a</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 11</span></span><br><span class="line">b = <span class="number">12</span></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// 12</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// 11</span></span><br></pre></td></tr></table></figure>
+<p>将 a 赋值给 b 之后，修改 b 不会对 a 产生影响。</p>
+<p>而当引用的值为引用类型时：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123; <span class="attr">name</span>: <span class="string">'janna'</span> &#125;</span><br><span class="line"><span class="keyword">var</span> b = a</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// &#123; name: 'janna' &#125;</span></span><br><span class="line">b.name = lisa</span><br><span class="line"><span class="built_in">console</span>.log(b) <span class="comment">// &#123; name: 'lisa' &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// &#123; name: 'lisa' &#125;</span></span><br></pre></td></tr></table></figure>
+<p>由于 a 和 b 是引用了同一个值的地址，修改 b 即修改同一个地址的值，会影响到 a。这时候就需要用到拷贝，而拷贝又分为浅拷贝和深拷贝。</p>
+<h1 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h1><p>浅拷贝只能拷贝第一层的值，如果里面的值还有引用类型，就要用到深拷贝。</p>
+<ol>
+<li><p>for 循环，将对象里的值逐一赋值给新对象，再返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clone</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> newObj = &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    newObj[key] = obj[key]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Object.assign(target, source)，用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newObj = <span class="built_in">Object</span>.assign(&#123;&#125;, obj)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h1><ol>
+<li>引入第三方工具，如 lodash cdn</li>
+<li>JSON 序列化和反序列化<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newObj = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，JSON 方法<strong>不适用于包含 function 的对象</strong>，无法序列化 function。</p>
+</blockquote>
+</li>
+<li>手动实现深拷贝<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> newObj = &#123;&#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> obj !== <span class="string">'object'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> obj[key] === <span class="string">'object'</span>) &#123;</span><br><span class="line">      <span class="comment">// 分为数组和对象处理</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(obj[key])) &#123;</span><br><span class="line">        <span class="comment">// 用 map 返回新数组，将数组中的元素递归</span></span><br><span class="line">        newObj[key] = obj[key].map(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">this</span>.deepClone(item)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 递归返回新对象</span></span><br><span class="line">        newObj[key] = <span class="keyword">this</span>.deepClone(obj[key])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj[key] === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="comment">// 函数用 bind 指定作用域返回</span></span><br><span class="line">      newObj[key] = obj[key].bind(newObj)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 基本类型直接返回</span></span><br><span class="line">      newObj[key] = obj[key]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/07/09/await-and-async/">async 和 await 是什么</a>
         </h1>
       
@@ -823,108 +905,11 @@ p 的状态由 p1、p2、p3 决定，分成两种情况：</li>
 
     </li>
   
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/07/02/property-type-of-object/">JS 对象属性类型</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-07-02T12:57:04.000Z" itemprop="datePublished">
-    2020-07-02
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/Object/">Object</a> }
-  </li>
-
-
-  </ul>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>ECMA-262 第 5 版在定义只有内部才用的特性时，描述了属性的各种特征。定义这些特性是为了实现 JS 引擎所用，在 JS 中不能直接访问。为了区分特性是内部值，规范把特性用[[ ]]括起来了，例如[[ Enumerable]]。</p>
-<p>ECMAScript 中包含两种属性：<strong>数据属性</strong>和<strong>访问器属性</strong>。</p>
-<h1 id="数据属性"><a href="#数据属性" class="headerlink" title="数据属性"></a>数据属性</h1><p>数据属性包含一个数据值的位置，可以读取和写入值。<br>数据属性有 4 个描述其行为的特性：</p>
-<ul>
-<li>[[ Configurable]] <ul>
-<li>可配置的：表示能否通过 delete 删除属性从而<strong>重新定义属性</strong>，能否<strong>修改属性的特性</strong>，或者能否<strong>把属性修改为访问器属性</strong>。直接在对象上定义的属性，它们的这个特性默认值为 true。</li>
-</ul>
-</li>
-<li>[[ Enumerable]] <ul>
-<li>可数的，可枚举的：表示能否通过 for-in 循环返回属性值。直接在对象上定义的属性，它们的这个特性默认值为 true。</li>
-</ul>
-</li>
-<li>[[ Writable]]<ul>
-<li>可写的：表示能否修改属性的值。直接在对象上定义的属性，它们的这个特性默认值为 true。</li>
-</ul>
-</li>
-<li>[[ Value]]<ul>
-<li>值：包含这个属性的数据值。读取属性值时，从这个位置读取；写入属性值时，把新值保存于此。这个特性的默认值为 undefined。</li>
-</ul>
-</li>
-</ul>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  name: <span class="string">"janna"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建一个名为 name 的属，为它指定值“janna”，即[[ Value]]特性被设置为“janna”。</p>
-<p>要修改属性默认特性，须用 ES5 的 Object.defineProperty()方法。该方法接受三个参数：configurable、enumerable、writable 和 value。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">"name"</span>, &#123;</span><br><span class="line">  writable: <span class="literal">false</span>, <span class="comment">// 即不可修改属性的值</span></span><br><span class="line">  value: <span class="string">"janna"</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">person.name = <span class="string">"haha"</span> <span class="comment">// 赋值失效</span></span><br><span class="line"><span class="built_in">console</span>.log(person.name) <span class="comment">// "janna"</span></span><br></pre></td></tr></table></figure>
-
-<p>再如，把 configurable 设置为 false，表示不能从对象中删除属性。而且，<strong>一旦把属性定义为不可配置，就不能再把它变为可配置</strong>。而此时再调用 Object.defineProperty()方法修改<strong>除 writable 之外</strong>的特性，都会导致错误。</p>
-<p><strong>在调用 Object.defineProperty()方法时，如果不指定。则configurable、enumerable 和 writable 特性的默认值都是 false</strong>。</p>
-<h1 id="访问器属性"><a href="#访问器属性" class="headerlink" title="访问器属性"></a>访问器属性</h1><p>访问器属性不包含数据值，它包含一对函数 getter 和 setter。在读取访问器属性时，会调用 getter 函数，负责返回有效的值；在写入访问器属性时，会调用 setter 函数并传入新值，负责决定如何处理数据。</p>
-<p>访问器属性有 4 个特性：</p>
-<ul>
-<li>[[ Configurable]] <ul>
-<li>可配置的：表示能否通过 delete 删除属性从而<strong>重新定义属性</strong>，能否<strong>修改属性的特性</strong>，或者能否<strong>把属性修改为数据属性</strong>。直接在对象上定义的属性，这个特性默认值为 true。</li>
-</ul>
-</li>
-<li>[[ Enumerable]] <ul>
-<li>可数的，可枚举的：表示能否通过 for-in 循环返回属性。直接在对象上定义的属性，这个特性默认值为 true。</li>
-</ul>
-</li>
-<li>[[ Get]]<ul>
-<li>读取：读取属性时调用的函数。默认值为 undefined。</li>
-</ul>
-</li>
-<li>[[ Set]]<ul>
-<li>写入：写入属性时调用的函数。默认值为 undefined。</li>
-</ul>
-</li>
-</ul>
-<p>访问器属性不能直接定义，必须使用 Object.defineProperty()来定义。</p>
-<p>举例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> book = &#123;</span><br><span class="line">  _year: <span class="number">2020</span>,</span><br><span class="line">  edition: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(book, <span class="string">"year"</span>, &#123;</span><br><span class="line">  <span class="keyword">get</span>: function() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._year</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">    <span class="keyword">if</span> (newValue &gt; <span class="number">2020</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>._year = newValue</span><br><span class="line">      <span class="keyword">this</span>.edition += newValue - <span class="number">2020</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">book.year = <span class="number">2021</span> <span class="comment">// 写入时调用 setter，修改了 _year 和 edition</span></span><br><span class="line"><span class="built_in">console</span>.log(book.edition) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-
-<p>这是使用访问器属性的常见方式，即设置一个属性的值会导致其他属性发生变化。</p>
-<p>不一定非要同时指定 getter 和 setter。只指定 getter 意味着属性不能写入，尝试写入属性会被忽略。在严格模式下，尝试写入只指定了 getter 函数的属性会抛出错误。只指定 setter 函数的属性也不能读，否则在非严格模式下返回 undefined，严格模式下会抛出错误。</p>
-<p>在不支持 Object.defineProperty()方法的浏览器中不能修改 [[ Configurable]]和[[ Enumerable]]。</p>
-<hr>
-<p>发现在遇到不懂的问题时，红宝书作为教材挺好用的，讲得很详细。年初说要手抄一遍红宝书的，半途而废了，希望今年能抄完。：）</p>
-<p>有位小哥哥问我平时有没写技术博客，好惭愧啊竟然没有，立马建了博客写起来，哪怕是记录学习笔记也是好的。</p>
-<p><strong>不积硅步，无以千里。</strong></p>
-
-      
-    </div>
-</article>
-
-    </li>
-  
 </ul>
 
   <section id="nav-wrapper">
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">« prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">« prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">next »</a>
     </nav>
   </section>
 
